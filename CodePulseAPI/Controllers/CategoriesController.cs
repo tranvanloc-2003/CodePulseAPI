@@ -19,6 +19,7 @@ namespace CodePulseAPI.Controllers
         {
             this.categoryRepository = categoryRepository;
         }
+        //post
         [HttpPost]
         public async Task<IActionResult> CreateCategory(CreateCategoriesRequestDto request)
         {
@@ -36,6 +37,25 @@ namespace CodePulseAPI.Controllers
                 UrlHandle = request.UrlHandle,
             };
 
+            return Ok(response);
+        }
+        //Get: https://localhost:7153/api/Categories
+        //lay danh sachs APi category
+        [HttpGet] 
+        public async Task<IActionResult> GetAllCategories()
+        {
+           var categories =  await categoryRepository.GetAllAsync();
+            var response = new List<CategoriesDto>();
+            foreach (var category in categories)
+            {
+                response.Add(new CategoriesDto
+                {
+                    Id = category.Id,
+                    Name = category.Name,
+                    UrlHandle = category.UrlHandle,
+                });
+
+            }
             return Ok(response);
         }
     }
