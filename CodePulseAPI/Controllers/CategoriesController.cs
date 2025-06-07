@@ -58,5 +58,49 @@ namespace CodePulseAPI.Controllers
             }
             return Ok(response);
         }
+        //GET: https://localhost:7153/api/Categories/{id}Add commentMore actions
+        //https://localhost:7153/api/Categories/1
+        //lay duy nhat 1 id de cos the chinh sua categories
+
+        [HttpGet]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> GetCategoryById([FromRoute]Guid id)
+        {
+           var existingCategory = await categoryRepository.GetById(id);
+            if(existingCategory is null)
+            {
+                return NotFound();
+            }
+            var response = new CategoriesDto
+            {
+                Id = existingCategory.Id,
+                Name = existingCategory.Name,
+                UrlHandle = existingCategory.UrlHandle,
+            };
+            return Ok(response);
+        }
+        [HttpPut]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> UpdateCategory([FromRoute] Guid id, UpdateCategoryRequestDto request)
+        {
+            var category = new Categories
+            {
+                Id = id,
+                Name = request.Name,
+                UrlHandle = request.UrlHandle,
+            };
+           category =  await categoryRepository.UpdateAsync(category);
+            if (category is null)
+            {
+              return NotFound();
+            }
+            var response = new CategoriesDto
+            {
+                Id = category.Id,
+                Name = category.Name,
+                UrlHandle = category.UrlHandle,
+            };
+            return Ok(response);
+        }
     }
 }
