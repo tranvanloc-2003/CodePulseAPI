@@ -1,9 +1,6 @@
-﻿using CodePulseAPI.Data;
-using CodePulseAPI.Models.Domain;
+﻿using CodePulseAPI.Models.Domain;
 using CodePulseAPI.Models.DTO;
 using CodePulseAPI.Repositories.Interface;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CodePulseAPI.Controllers
@@ -21,7 +18,7 @@ namespace CodePulseAPI.Controllers
         }
         //post
         [HttpPost]
-        public async Task<IActionResult> CreateCategory(CreateCategoriesRequestDto request)
+        public async Task<IActionResult> CreateCategory([FromBody] CreateCategoriesRequestDto request)
         {
             var category = new Categories
             {
@@ -41,10 +38,10 @@ namespace CodePulseAPI.Controllers
         }
         //Get: https://localhost:7153/api/Categories
         //lay danh sachs APi category
-        [HttpGet] 
+        [HttpGet]
         public async Task<IActionResult> GetAllCategories()
         {
-           var categories =  await categoryRepository.GetAllAsync();
+            var categories = await categoryRepository.GetAllAsync();
             var response = new List<CategoriesDto>();
             foreach (var category in categories)
             {
@@ -56,6 +53,27 @@ namespace CodePulseAPI.Controllers
                 });
 
             }
+            return Ok(response);
+        }
+        //GET: https://localhost:7153/api/Categories/{id}
+        //https://localhost:7153/api/Categories/1
+        //lay duy nhat 1 id de cos the chinh sua categories
+        [HttpGet]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> GetCategoryById([FromRoute] Guid id)
+        {
+           var existingCategory = await categoryRepository.GetById(id);
+            if (existingCategory is null)
+            {
+                return NotFound();
+            }
+
+            var response = new CategoriesDto
+            {
+                Id = existingCategory.Id,
+                Name = existingCategory.Name,
+                UrlHandle = existingCategory.UrlHandle,
+            };
             return Ok(response);
         }
     }

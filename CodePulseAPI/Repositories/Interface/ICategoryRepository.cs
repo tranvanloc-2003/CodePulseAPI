@@ -6,5 +6,7 @@ namespace CodePulseAPI.Repositories.Interface
     {
         Task<Categories> CreateAsync(Categories categories);
         Task<IEnumerable<Categories>> GetAllAsync();
+
+        Task<Categories> GetById(Guid id);
     }
 }
