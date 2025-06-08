@@ -1,4 +1,4 @@
-﻿namespace CodePulseAPI.Models.DTO
+﻿namespace CodePulseAPI.Models.DTO.Categories
 {
     public class UpdateCategoryRequestDto
     {
