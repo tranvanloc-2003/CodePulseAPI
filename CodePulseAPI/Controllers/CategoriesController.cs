@@ -41,10 +41,10 @@ namespace CodePulseAPI.Controllers
         }
         //Get: https://localhost:7153/api/Categories
         //lay danh sachs APi category
-        [HttpGet] 
+        [HttpGet]
         public async Task<IActionResult> GetAllCategories()
         {
-           var categories =  await categoryRepository.GetAllAsync();
+            var categories = await categoryRepository.GetAllAsync();
             var response = new List<CategoriesDto>();
             foreach (var category in categories)
             {
@@ -64,10 +64,10 @@ namespace CodePulseAPI.Controllers
 
         [HttpGet]
         [Route("{id:Guid}")]
-        public async Task<IActionResult> GetCategoryById([FromRoute]Guid id)
+        public async Task<IActionResult> GetCategoryById([FromRoute] Guid id)
         {
-           var existingCategory = await categoryRepository.GetById(id);
-            if(existingCategory is null)
+            var existingCategory = await categoryRepository.GetById(id);
+            if (existingCategory is null)
             {
                 return NotFound();
             }
@@ -79,6 +79,7 @@ namespace CodePulseAPI.Controllers
             };
             return Ok(response);
         }
+        //PUT: https://localhost:7153/api/Categories/{id}
         [HttpPut]
         [Route("{id:Guid}")]
         public async Task<IActionResult> UpdateCategory([FromRoute] Guid id, UpdateCategoryRequestDto request)
@@ -89,16 +90,36 @@ namespace CodePulseAPI.Controllers
                 Name = request.Name,
                 UrlHandle = request.UrlHandle,
             };
-           category =  await categoryRepository.UpdateAsync(category);
+            category = await categoryRepository.UpdateAsync(category);
             if (category is null)
             {
-              return NotFound();
+                return NotFound();
             }
             var response = new CategoriesDto
             {
                 Id = category.Id,
                 Name = category.Name,
                 UrlHandle = category.UrlHandle,
+            };
+            return Ok(response);
+        }
+        //DELETE: https://localhost:7153/api/Categories/{id}
+        //Xoa san pham thong qua id
+        [HttpDelete]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> DeleteById([FromRoute] Guid id)
+        {
+           var category =  await categoryRepository.DeleteAsync(id);
+            if(category is null)
+            {
+                return NotFound();
+            }
+            var response = new CategoriesDto
+            {
+                Id = category.Id,
+                Name = category.Name,
+                UrlHandle = category.UrlHandle,
+
             };
             return Ok(response);
         }
