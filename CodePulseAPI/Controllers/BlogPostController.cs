@@ -29,7 +29,7 @@ namespace CodePulseAPI.Controllers
                 FeaturedImageUrl = request.FeaturedImageUrl,
                 DateCreate = request.DateCreate,
                 Author  = request.Author,
-                Invisible = request.Invisible,
+                Isvisible = request.Isvisible,
             };
             await repository.CreateAsync(blogPost);
             var response = new BlogPostDto
@@ -41,7 +41,7 @@ namespace CodePulseAPI.Controllers
                 FeaturedImageUrl = request.FeaturedImageUrl,
                 DateCreate = request.DateCreate,
                 Author = request.Author,
-                Invisible = request.Invisible,
+                Isvisible = request.Isvisible,
 
             };
             return Ok(response);

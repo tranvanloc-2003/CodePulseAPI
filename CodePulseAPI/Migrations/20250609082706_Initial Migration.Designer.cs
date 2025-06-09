@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CodePulseAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250605185716_Initial Migration")]
+    [Migration("20250609082706_Initial Migration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -46,7 +46,7 @@ namespace CodePulseAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Invisible")
+                    b.Property<bool>("Isvisible")
                         .HasColumnType("bit");
 
                     b.Property<string>("ShortDescription")

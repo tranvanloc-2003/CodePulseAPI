@@ -43,7 +43,7 @@ namespace CodePulseAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Invisible")
+                    b.Property<bool>("Isvisible")
                         .HasColumnType("bit");
 
                     b.Property<string>("ShortDescription")

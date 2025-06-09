@@ -23,7 +23,7 @@ namespace CodePulseAPI.Migrations
                     FeaturedImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Author = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Invisible = table.Column<bool>(type: "bit", nullable: false)
+                    Isvisible = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
