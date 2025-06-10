@@ -11,5 +11,6 @@
         public DateTime DateCreate { get; set; }
         public string Author { get; set; }
         public bool Isvisible { get; set; }
+        public ICollection<Categories> Category { get; set; }
     }
 }
