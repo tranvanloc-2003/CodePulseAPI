@@ -9,6 +9,8 @@
         public string FeaturedImageUrl { get; set; }
         public DateTime DateCreate { get; set; } = DateTime.UtcNow;
         public string Author { get; set; }
-        public bool Invisible { get; set; }
+        public bool Isvisible { get; set; }
+        //them nhieu mang danh muc
+        public Guid[] Categories { get; set; }
     }
 }

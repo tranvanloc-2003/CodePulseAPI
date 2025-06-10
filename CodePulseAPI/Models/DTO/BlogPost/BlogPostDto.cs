@@ -11,5 +11,6 @@
         public DateTime DateCreate { get; set; } = DateTime.UtcNow;
         public string Author { get; set; }
         public bool Isvisible { get; set; }
+        public List<CategoriesDto> Categories { get; set; } = new List<CategoriesDto>();
     }
 }
