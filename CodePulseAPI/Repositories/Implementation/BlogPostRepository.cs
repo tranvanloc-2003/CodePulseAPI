@@ -34,10 +34,14 @@ namespace CodePulseAPI.Repositories.Implementation
         //chinh sua blogpost theo id
         public async Task<BlogPost?> UpdateAsync(BlogPost blogPost)
         {
-            var existingBlogPost = await dbContext.BlogPosts.FirstOrDefaultAsync(x => x.Id == blogPost.Id);
+            var existingBlogPost = await dbContext.BlogPosts.Include(x => x.Category).FirstOrDefaultAsync(x => x.Id == blogPost.Id);
             if (existingBlogPost != null)
             {
-                dbContext.Entry(blogPost).CurrentValues.SetValues(blogPost);
+                dbContext.Entry(existingBlogPost).CurrentValues.SetValues(blogPost);
+                //update categories
+                existingBlogPost.Category = blogPost.Category;
+
+                //luu vao csdl 
                 await dbContext.SaveChangesAsync();
                 return blogPost;
             }

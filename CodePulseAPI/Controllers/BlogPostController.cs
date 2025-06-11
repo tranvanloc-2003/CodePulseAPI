@@ -125,5 +125,59 @@ namespace CodePulseAPI.Controllers
             };
             return Ok(response);
         }
+        //PUT 
+        [HttpPut]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> UpdateBlogPostById([FromRoute] Guid id, UpdateBlogPostRequest request)
+        {
+            var blogPost = new BlogPost
+            {
+                Id = id,
+                Title = request.Title,
+                ShortDescription = request.ShortDescription,
+                Content = request.Content,
+                UrlHandle = request.UrlHandle,
+                FeaturedImageUrl = request.FeaturedImageUrl,
+                DateCreate = request.DateCreate,
+                Author = request.Author,
+                Isvisible = request.Isvisible,
+                Category = new List<Categories>()
+            };
+            foreach(var categoriesGuid in request.CategoriesId)
+            {
+                var existingBlogPost = await categoryRepository.GetById(categoriesGuid);
+                if (existingBlogPost != null)
+                {
+                    blogPost.Category.Add(existingBlogPost);
+                }
+            }
+            //goi repository de nang cap blogpost domain model
+           var updateBlogPost = await repository.UpdateAsync(blogPost);
+            if (updateBlogPost is null)
+
+            {
+                return NotFound();
+            }
+            //chuyen domain model ve dto
+            var response = new BlogPostDto
+            {
+                Id = blogPost.Id,
+                Title = blogPost.Title,
+                ShortDescription = blogPost.ShortDescription,
+                Content = blogPost.Content,
+                UrlHandle = blogPost.UrlHandle,
+                FeaturedImageUrl = blogPost.FeaturedImageUrl,
+                DateCreate = blogPost.DateCreate,
+                Author = blogPost.Author,
+                Isvisible = blogPost.Isvisible,
+                Categories = blogPost.Category.Select(x => new CategoriesDto
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    UrlHandle = x.UrlHandle,
+                }).ToList()
+            };
+            return Ok(response);
+        }
     }
 }
