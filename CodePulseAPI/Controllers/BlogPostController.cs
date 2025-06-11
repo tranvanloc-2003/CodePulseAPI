@@ -15,7 +15,7 @@ namespace CodePulseAPI.Controllers
         private readonly IBlogPostRepository repository;
         private readonly ICategoryRepository categoryRepository;
 
-        public BlogPostController( IBlogPostRepository repository,ICategoryRepository categoryRepository)
+        public BlogPostController(IBlogPostRepository repository, ICategoryRepository categoryRepository)
         {
             this.repository = repository;
             this.categoryRepository = categoryRepository;
@@ -32,12 +32,12 @@ namespace CodePulseAPI.Controllers
                 UrlHandle = request.UrlHandle,
                 FeaturedImageUrl = request.FeaturedImageUrl,
                 DateCreate = request.DateCreate,
-                Author  = request.Author,
+                Author = request.Author,
                 Isvisible = request.Isvisible,
                 Category = new List<Categories>()
             };
             //lay theo id category
-            foreach(var categoryGuid in request.Categories)
+            foreach (var categoryGuid in request.Categories)
             {
                 var existingCategories = await categoryRepository.GetById(categoryGuid);
                 if (existingCategories != null)
@@ -72,7 +72,7 @@ namespace CodePulseAPI.Controllers
         {
             var blogPosts = await repository.GetAllAsync();
             var response = new List<BlogPostDto>();
-            foreach(var blogPost in blogPosts)
+            foreach (var blogPost in blogPosts)
             {
                 response.Add(new BlogPostDto
                 {
@@ -101,7 +101,7 @@ namespace CodePulseAPI.Controllers
         public async Task<IActionResult> GetBlogPostById([FromRoute] Guid id)
         {
             var existingBlogPost = await repository.GetById(id);
-            if(existingBlogPost is null)
+            if (existingBlogPost is null)
             {
                 return NotFound();
             }
@@ -130,6 +130,7 @@ namespace CodePulseAPI.Controllers
         [Route("{id:Guid}")]
         public async Task<IActionResult> UpdateBlogPostById([FromRoute] Guid id, UpdateBlogPostRequest request)
         {
+            //convert dto to domain model
             var blogPost = new BlogPost
             {
                 Id = id,
@@ -143,25 +144,23 @@ namespace CodePulseAPI.Controllers
                 Isvisible = request.Isvisible,
                 Category = new List<Categories>()
             };
-            foreach(var categoriesGuid in request.CategoriesId)
+            //foreach 
+            foreach(var categoryGuid in request.Categories)
             {
-                var existingBlogPost = await categoryRepository.GetById(categoriesGuid);
-                if (existingBlogPost != null)
+            var existingCategory =    await categoryRepository.GetById(categoryGuid);
+                if(existingCategory != null)
                 {
-                    blogPost.Category.Add(existingBlogPost);
+                    blogPost.Category.Add(existingCategory);
                 }
             }
-            //goi repository de nang cap blogpost domain model
-           var updateBlogPost = await repository.UpdateAsync(blogPost);
-            if (updateBlogPost is null)
-
+            //call repository to update blogpost domain model
+            var updateBlogPost =await repository.UpdateAsync(blogPost);
+            if(updateBlogPost == null)
             {
                 return NotFound();
             }
-            //chuyen domain model ve dto
             var response = new BlogPostDto
             {
-                Id = blogPost.Id,
                 Title = blogPost.Title,
                 ShortDescription = blogPost.ShortDescription,
                 Content = blogPost.Content,
