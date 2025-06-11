@@ -95,5 +95,35 @@ namespace CodePulseAPI.Controllers
             }
             return Ok(response);
         }
+        //lay danh sachs theo id
+        [HttpGet]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> GetBlogPostById([FromRoute] Guid id)
+        {
+            var existingBlogPost = await repository.GetById(id);
+            if(existingBlogPost is null)
+            {
+                return NotFound();
+            }
+            var response = new BlogPostDto
+            {
+                Id = existingBlogPost.Id,
+                Title = existingBlogPost.Title,
+                ShortDescription = existingBlogPost.ShortDescription,
+                Content = existingBlogPost.Content,
+                UrlHandle = existingBlogPost.UrlHandle,
+                FeaturedImageUrl = existingBlogPost.FeaturedImageUrl,
+                DateCreate = existingBlogPost.DateCreate,
+                Author = existingBlogPost.Author,
+                Isvisible = existingBlogPost.Isvisible,
+                Categories = existingBlogPost.Category.Select(x => new CategoriesDto
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    UrlHandle = x.UrlHandle,
+                }).ToList()
+            };
+            return Ok(response);
+        }
     }
 }
