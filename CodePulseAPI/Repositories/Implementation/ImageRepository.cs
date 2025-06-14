@@ -25,6 +25,11 @@ namespace CodePulseAPI.Repositories.Implementation
             return await dbContext.BlogImages.ToListAsync();
         }
 
+        public async Task<IEnumerable<BlogImage>> GetAsync()
+        {
+            return await dbContext.BlogImages.ToListAsync();
+        }
+
         public async Task<BlogImage> Upload(IFormFile file, BlogImage blogImage)
         {
             // 1- Upload the Image to API/Images

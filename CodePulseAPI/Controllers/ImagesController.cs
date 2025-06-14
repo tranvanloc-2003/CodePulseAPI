@@ -15,7 +15,28 @@ namespace CodePulseAPI.Controllers
         {
             this.imageRepository = imageRepository;
         }
-
+        //GET: {apibaseurl}/api/images
+        [HttpGet]
+        public async Task<IActionResult> GetAllImage()
+        {
+            //goi repository de lay hinh anh
+           var images =  await imageRepository.GetAsync();
+            //chuyen doi domain sang dto
+            var response = new List<BlogImageDto>();
+            foreach(var blogimage in images)
+            {
+                response.Add(new BlogImageDto
+                {
+                    Id = blogimage.Id,
+                    Title = blogimage.Title,
+                    FileExtension = blogimage.FileExtension,
+                    Url = blogimage.Url,
+                    FileName = blogimage.FileName,
+                    DateCreated = blogimage.DateCreated,
+                });
+            }
+            return Ok(response);
+        }
         // POST: {apibaseurl}/api/images
         [HttpPost]
         public async Task<IActionResult> UploadImage([FromForm] UploadImageRequest request)
