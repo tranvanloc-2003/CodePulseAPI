@@ -161,15 +161,15 @@ namespace CodePulseAPI.Controllers
             }
             var response = new BlogPostDto
             {
-                Title = blogPost.Title,
-                ShortDescription = blogPost.ShortDescription,
-                Content = blogPost.Content,
-                UrlHandle = blogPost.UrlHandle,
-                FeaturedImageUrl = blogPost.FeaturedImageUrl,
-                DateCreate = blogPost.DateCreate,
-                Author = blogPost.Author,
-                Isvisible = blogPost.Isvisible,
-                Categories = blogPost.Category.Select(x => new CategoriesDto
+                Title = updateBlogPost.Title,
+                ShortDescription = updateBlogPost.ShortDescription,
+                Content = updateBlogPost.Content,
+                UrlHandle = updateBlogPost.UrlHandle,
+                FeaturedImageUrl = updateBlogPost.FeaturedImageUrl,
+                DateCreate = updateBlogPost.DateCreate,
+                Author = updateBlogPost.Author,
+                Isvisible = updateBlogPost.Isvisible,
+                Categories = updateBlogPost.Category.Select(x => new CategoriesDto
                 {
                     Id = x.Id,
                     Name = x.Name,
