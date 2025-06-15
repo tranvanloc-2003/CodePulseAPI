@@ -204,5 +204,38 @@ namespace CodePulseAPI.Controllers
             };
             return Ok(response);
         }
+        //http.../api/BlogPost/{urlHandle}
+        //GET by Url handle 
+        [HttpGet]
+        [Route("{urlHandle}")]
+        public async Task<IActionResult> GetBlogPostByUrlHandle([FromRoute] string urlHandle)
+        {
+            //lay chitiet bai dang blog tu repository
+         var getUrlHandle =    await repository.GetByUrlHandle(urlHandle);
+            if(getUrlHandle is null)
+            {
+                return NotFound();
+            }
+            var response = new BlogPostDto
+            {
+                Id = getUrlHandle.Id,
+                Title = getUrlHandle.Title,
+                ShortDescription = getUrlHandle.ShortDescription,
+                Content = getUrlHandle.Content,
+                UrlHandle = getUrlHandle.UrlHandle,
+                FeaturedImageUrl = getUrlHandle.FeaturedImageUrl,
+                DateCreate = getUrlHandle.DateCreate,
+                Author = getUrlHandle.Author,
+                Isvisible = getUrlHandle.Isvisible,
+                Categories = getUrlHandle.Category.Select(x => new CategoriesDto
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    UrlHandle = x.UrlHandle,
+                }).ToList()
+            };
+            return Ok(response);
+
+        }
     }
 }
