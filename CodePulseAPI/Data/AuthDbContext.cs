@@ -6,10 +6,14 @@ namespace CodePulseAPI.Data
 {
     public class AuthDbContext : IdentityDbContext
     {
-        public AuthDbContext(DbContextOptions options) : base(options)
+        public AuthDbContext(DbContextOptions<AuthDbContext> options) : base(options)
         {
         }
-
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)//tắt cảnh báo khi thêm vào sql
+        {
+            optionsBuilder.ConfigureWarnings(warnings =>
+                warnings.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning));
+        }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -44,8 +48,8 @@ namespace CodePulseAPI.Data
             {
                 Id = adminUserId,
                 UserName = "admin@gmail.com",
-                Email = "admin@mail.ru",
-                NormalizedEmail = "admin@mail.ru".ToUpper(),
+                Email = "admin@mail.com",
+                NormalizedEmail = "admin@mail.com".ToUpper(),
                 NormalizedUserName = "admin@gmail.com".ToUpper(),
             };
             admin.PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(admin, "admin");
