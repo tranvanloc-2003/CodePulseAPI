@@ -49,14 +49,15 @@ namespace CodePulseAPI.Controllers
             //chuyen domain sang dto
             var response = new BlogPostDto
             {
-                Title = request.Title,
-                ShortDescription = request.ShortDescription,
-                Content = request.Content,
-                UrlHandle = request.UrlHandle,
-                FeaturedImageUrl = request.FeaturedImageUrl,
-                DateCreate = request.DateCreate,
-                Author = request.Author,
-                Isvisible = request.Isvisible,
+                Id = blogPost.Id,
+                Title = blogPost.Title,
+                ShortDescription = blogPost.ShortDescription,
+                Content = blogPost.Content,
+                UrlHandle = blogPost.UrlHandle,
+                FeaturedImageUrl = blogPost.FeaturedImageUrl,
+                DateCreate = blogPost.DateCreate,
+                Author = blogPost.Author,
+                Isvisible = blogPost.Isvisible,
                 Categories = blogPost.Category.Select(x => new CategoriesDto
                 {
                     Id = x.Id,
