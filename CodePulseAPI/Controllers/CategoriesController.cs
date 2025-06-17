@@ -23,6 +23,7 @@ namespace CodePulseAPI.Controllers
         }
         //post
         [HttpPost]
+        [Authorize(Roles = "Write")]// uy quyen
         public async Task<IActionResult> CreateCategory(CreateCategoriesRequestDto request)
         {
             var category = new Categories
@@ -44,7 +45,6 @@ namespace CodePulseAPI.Controllers
         //Get: https://localhost:7153/api/Categories
         //lay danh sachs APi category
         [HttpGet]
-        [Authorize (Roles = "Writer")]// uy quyen
         public async Task<IActionResult> GetAllCategories()
         {
             var categories = await categoryRepository.GetAllAsync();
@@ -85,6 +85,7 @@ namespace CodePulseAPI.Controllers
         //PUT: https://localhost:7153/api/Categories/{id}
         [HttpPut]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "Write")]// uy quyen
         public async Task<IActionResult> UpdateCategory([FromRoute] Guid id, UpdateCategoryRequestDto request)
         {
             var category = new Categories
@@ -110,6 +111,7 @@ namespace CodePulseAPI.Controllers
         //Xoa san pham thong qua id
         [HttpDelete]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "Write")]// uy quyen
         public async Task<IActionResult> DeleteById([FromRoute] Guid id)
         {
            var category =  await categoryRepository.DeleteAsync(id);
