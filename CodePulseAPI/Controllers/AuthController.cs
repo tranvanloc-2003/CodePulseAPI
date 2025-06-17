@@ -63,5 +63,33 @@ namespace CodePulseAPI.Controllers
             }
             return ValidationProblem(ModelState);
         }
+        //POST: {apibaseurl}/api/auth/login
+        [HttpPost]
+        [Route("login")]
+        public async Task<IActionResult> login([FromBody] LoginRequestDto request)
+        {
+            // kiem tra email
+         var identityUser =    await userManager.FindByEmailAsync(request.Email);
+            if(identityUser is not null)
+            {
+                // kiem tra mat khau
+             var checkPasswordResult =    await userManager.CheckPasswordAsync(identityUser, request.Password);
+                if (checkPasswordResult)
+                {
+                    var roles = await userManager.GetRolesAsync(identityUser);
+                    //tao 1 token va response (phan hoi)
+                    var response = new LoginResponseDto
+                    {
+                        Email = request.Email,
+                        Roles = roles.ToList(),
+                        Token = "TOKEN",
+
+                    };
+                    return Ok();
+                }
+            }
+            ModelState.AddModelError("", "Email hoặc mật khẩu không đúng");
+            return ValidationProblem(ModelState);
+        }
     }
 }
