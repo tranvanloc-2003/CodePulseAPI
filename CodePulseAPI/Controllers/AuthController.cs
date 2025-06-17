@@ -1,4 +1,5 @@
 ﻿using CodePulseAPI.Models.DTO.Auth;
+using CodePulseAPI.Repositories.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,11 +11,13 @@ namespace CodePulseAPI.Controllers
     public class AuthController : ControllerBase
     {
         private readonly UserManager<IdentityUser> userManager;
+        private readonly ITokenRepository tokenRepository;
 
         //tao costructor
-        public AuthController(UserManager<IdentityUser> userManager) 
+        public AuthController(UserManager<IdentityUser> userManager, ITokenRepository tokenRepository) 
         {
             this.userManager = userManager;
+            this.tokenRepository = tokenRepository;
         }
 
         //POST: {apibaseurl}/api/auth/register
@@ -37,7 +40,7 @@ namespace CodePulseAPI.Controllers
                 identityResult = await userManager.AddToRoleAsync(user, "Reader");
                 if (identityResult.Succeeded)
                 {
-                    return Ok();
+                    return Ok(identityResult);
                 }
                 else
                 {
@@ -78,14 +81,16 @@ namespace CodePulseAPI.Controllers
                 {
                     var roles = await userManager.GetRolesAsync(identityUser);
                     //tao 1 token va response (phan hoi)
+                   var jwtToken =  tokenRepository.CreateJwtToken(identityUser, roles.ToList());
+
                     var response = new LoginResponseDto
                     {
                         Email = request.Email,
                         Roles = roles.ToList(),
-                        Token = "TOKEN",
+                        Token = jwtToken , // them token  thay text "TOKEN"(test commit git truoc)
 
                     };
-                    return Ok();
+                    return Ok(response);
                 }
             }
             ModelState.AddModelError("", "Email hoặc mật khẩu không đúng");
