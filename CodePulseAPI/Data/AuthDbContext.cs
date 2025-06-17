@@ -9,11 +9,11 @@ namespace CodePulseAPI.Data
         public AuthDbContext(DbContextOptions<AuthDbContext> options) : base(options)
         {
         }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)//tắt cảnh báo khi thêm vào sql
-        {
-            optionsBuilder.ConfigureWarnings(warnings =>
-                warnings.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning));
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)//tắt cảnh báo khi thêm vào sql
+        //{
+        //    optionsBuilder.ConfigureWarnings(warnings =>
+        //        warnings.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning));
+        //}
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
